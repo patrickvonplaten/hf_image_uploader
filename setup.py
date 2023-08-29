@@ -77,16 +77,11 @@ To create the package for pypi.
 11. Run `make post-release` (or, for a patch release, `make post-patch`). If you were on a branch for the release,
     you need to go back to main before executing this.
 """
-
-import os
-import re
-from distutils.core import Command
-
 from setuptools import find_packages, setup
 
 
 setup(
-    name="image_uploader",
+    name="hf_image_uploader",
     version="0.0.1",  # expected format is one of x.y.z.dev0, or x.y.z.rc1 or x.y.z (no to dashes, yes to dots)
     description="State-of-the-art diffusion in PyTorch and JAX.",
     long_description="long",
