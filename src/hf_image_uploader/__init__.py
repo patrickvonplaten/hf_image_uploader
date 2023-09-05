@@ -4,20 +4,30 @@ import os
 from huggingface_hub import HfApi
 import tempfile
 from typing import Optional, Union
+import random
+import string
 
 api = HfApi()
 
-def upload(image: Optional["PIL.Image"], repo_id: str, image_path: Optional[Union[str, os.PathLike]] = None, token: Optional[str] = None, repo_type: str = "dataset"):
+
+def generate_random_string(length):
+    characters = string.ascii_letters + string.digits  # Includes both letters and digits
+    random_string = ''.join(random.choice(characters) for _ in range(length))
+    return random_string
+
+def upload(image: Optional["PIL.Image"], repo_id: str, image_path: Optional[Union[str, os.PathLike]] = None, name: Optional[str] = None, token: Optional[str] = None, repo_type: str = "dataset"):
 
     assert not isinstance(image, (tuple, list)), "Make sure that `image` is a single image instead of a list"
 
     if image is None and image_path is None:
         raise ValueError("Either `image` or `image_path` has to be defined.")
 
+    name = name or f"{generate_random_string(10)}.png"
+
     temp_dir = None
     if image_path is None:
         temp_dir = tempfile.TemporaryDirectory()
-        image_path = temp_dir.name + '/image.png'
+        image_path = os.path.join(temp_dir.name, name)
 
     image.save(image_path)
 
