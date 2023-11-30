@@ -15,7 +15,7 @@ def generate_random_string(length):
     random_string = ''.join(random.choice(characters) for _ in range(length))
     return random_string
 
-def upload(image: Optional["PIL.Image"], repo_id: str, image_path: Optional[Union[str, os.PathLike]] = None, name: Optional[str] = None, token: Optional[str] = None, repo_type: str = "dataset"):
+def upload(image: Optional["PIL.Image"] = None, repo_id: Optional[str] = None, image_path: Optional[Union[str, os.PathLike]] = None, name: Optional[str] = None, token: Optional[str] = None, repo_type: str = "dataset"):
 
     assert not isinstance(image, (tuple, list)), "Make sure that `image` is a single image instead of a list"
 
@@ -29,7 +29,8 @@ def upload(image: Optional["PIL.Image"], repo_id: str, image_path: Optional[Unio
         temp_dir = tempfile.TemporaryDirectory()
         image_path = os.path.join(temp_dir.name, name)
 
-    image.save(image_path)
+    if not os.path.exists(image_path):
+        image.save(image_path)
 
     path_in_repo = image_path.split("/")[-1]
 
